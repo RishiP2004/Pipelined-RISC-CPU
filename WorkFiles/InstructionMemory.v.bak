@@ -1,0 +1,19 @@
+module InstructionMemory (
+	input [2:0] pc
+	output reg [7:0] instruction
+);
+	reg [7:0] memory [0:7];
+	
+	initial begin
+		memory[0] = 8'b00_0_00100;  // LOAD R0, 4  (00 opcode, R0, immediate 4)
+		memory[1] = 8'b01_1_00011;  // ADD R1, 3   (01 opcode, R1, immediate 3)
+		memory[2] = 8'b10_0_01110;  // STORE R0, 14 (10 opcode, R0, address 14)
+		memory[3] = 8'b11_1_00101;  // SUB R1, 5   (11 opcode, R1, immediate 5)
+		memory[4] = 8'b10_1_01010;  // STORE R1, 10 (10 opcode, R1, address 10)
+	
+
+	always @(*) begin
+		instruction = memory[pc]
+	end
+	
+endmodule

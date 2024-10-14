@@ -1,0 +1,35 @@
+module MemoryStage (
+    input [3:0] opcode,                // Op code from Execution Stage
+    input [7:0] write_data,            // Data to write (for STORE operation)
+    input [3:0] mem_addr,              // Address for memory operation
+    input store_enable,                 // Store enable signal from Execution
+    input load_enable,                  // Load enable signal from Execution
+    output reg [7:0] read_data,         // Data read from memory
+    output reg write_enable_mem         // Write enable signal for memory
+);
+
+    // Memory storage (for example, a simple memory array)
+    reg [7:0] memory [0:15];            // 16 bytes of memory
+
+    // Initialize memory for demonstration
+    initial begin
+        // Optionally pre-load some values for simulation
+        memory[0] = 8'hAA; // Example data
+        memory[1] = 8'hBB;
+        memory[2] = 8'hCC;
+        // Initialize other addresses as needed...
+    end
+
+    always @(*) begin
+        read_data = 8'b00000000;          // Default read data
+        write_enable_mem = 0;             // Default write enable
+
+        if (store_enable) begin
+            memory[mem_addr] = write_data; // Write to memory
+            write_enable_mem = 1;         // Set write enable for memory
+        end
+        else if (load_enable) begin
+            read_data = memory[mem_addr]; // Load data from memory
+        end
+    end
+endmodule

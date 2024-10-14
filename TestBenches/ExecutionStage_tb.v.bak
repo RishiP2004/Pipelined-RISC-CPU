@@ -1,0 +1,70 @@
+`timescale 1ns / 1ps
+
+module ExecutionStage_tb;
+	reg clk;
+	reg [3:0] opcode;
+	reg [7:0] operand1;
+	reg [7:0] operand2;
+	wire [7:0] result;
+	
+	InstructionFetchStage uut (
+		.clk(clk),
+		.opcode(opcode),
+		.operand1(operand1),
+		.operand2(operand2),
+		.result(result)
+	);
+	
+	always begin
+		#10 clk = ~clk; 	// Toggle clock every 10ns (20ns clock period)
+   end
+	
+	initial begin
+		// Initialize inputs
+		opcode = 4'b0000; // Default opcode
+		operand1 = 8'b00000000;
+		operand2 = 8'b00000000;
+
+		// Test ADD operation
+		#20;
+		
+		opcode = 4'b0001; // ADD
+		operand1 = 8'd5;  // Operand 1: 5
+		operand2 = 8'd3;  // Operand 2: 3
+		#20; // Wait for one clock cycle
+		$display("ADD result: %d", result); // Expect 8
+
+		// Test SUB operation
+		#20;
+		opcode = 4'b0010; // SUB
+		operand1 = 8'd10; // Operand 1: 10
+		operand2 = 8'd4;  // Operand 2: 4
+		#20; // Wait for one clock cycle
+		$display("SUB result: %d", result); // Expect 6
+
+		// Test LOAD operation
+		#20;
+		opcode = 4'b0011; // LOAD
+		operand1 = 8'd25; // Immediate value to load
+		#20; // Wait for one clock cycle
+		$display("LOAD result: %d", result); // Expect 25
+
+		// Test STORE operation
+		#20;
+		opcode = 4'b0100; // STORE
+		operand1 = 8'd15; // Value to store
+		#20; // Wait for one clock cycle
+		$display("STORE result: %d", result); // Expect 15
+
+		// Test default case
+		#20;
+		opcode = 4'b1111; // Invalid opcode
+		#20; // Wait for one clock cycle
+		$display("Default result: %d", result); // Expect 0
+
+		// End simulation
+		#20;
+		$finish;
+	end
+	
+endmodule

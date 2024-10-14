@@ -1,0 +1,17 @@
+module RISCCPU (
+	input clk,
+	input reset,
+	output reg [8:0] result
+)
+
+	wire [2:0] if_pc
+	wire [7:0] if_instruction
+
+	InstructionFetchStage instructionFetchStage (
+		.clk(clk)
+		.reset(reset)
+		.pc(if_pc)
+		.instruction(if_instruction)
+	)
+	
+endmodule

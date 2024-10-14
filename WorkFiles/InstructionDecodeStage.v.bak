@@ -1,0 +1,73 @@
+module InstructionDecodeStage (
+	input [15:0] instruction,			// Instruction from IFStae
+	output reg [3:0] opcode,			// Op code to pass to Execute
+	output [7:0] operand1,				// Value of operand1 from reg1
+	output [7:0] operand2,				// Value of operand2 from reg2
+
+	// Data from and to RegisterFile
+	input [7:0] reg1_data,				// Data output of first register
+	input [7:0] reg2_data,				// Data output of second register 
+	output reg [3:0] read_reg1,		// First register address to read
+	output reg [3:0] read_reg2,		// Second register address to read
+	output reg write_enable,			// Write to register file flag
+	
+	// Interacting to Memory
+	output reg store_enable,			// If store to MEM enabled
+	output reg [3:0] addr				// Address the data goes to (MEM)
+)
+
+	always @(*) begin:
+		opcode = instruction[15:12];
+		read_reg1 = instruction[11:8];
+		read_reg2 = instruction[7:4];
+		operand1 = 8'b00000000;            // Default operand1
+		operand2 = 8'b00000000;            // Default operand2
+		write_enable = 0;                  // Default write_enable
+		store_enable = 0;                  // Default store_enable
+		addr = 4'b0000;                    // Default address
+		
+		case (opcode)
+			4'b0001: begin // ADD 
+				operand1 = reg1_data;	     	// Get data from reg1
+				operand2 = reg2_data;        	// Get data from reg2
+				addr = instruction[3:0];		// Register it gets stored to after
+				write_enable = 1;
+			end
+			
+			4'b0010: begin // SUB 
+				operand1 = reg1_data;         // Get data from reg1
+				operand2 = reg2_data;         // Get data from reg2
+				addr = instruction[3:0];		// Register it gets stored to after
+				write_enable = 1;
+			end
+            
+			4'b0011: begin // LOAD to Reg1 (IMMEDIATE)
+				write_enable = 1;
+				operand1 = instruction[3:0]; 	// Data to be stored into Reg1 (IMMEDIATE)
+				addr = read_reg1;
+			end
+         
+			4'b0100: begin // STORE (IMMEDIATE)
+				store_enable = 1;
+				instruction[3:0] = addr;		// Address to read in memory from
+			end
+			
+			4'b0101: begin // LOAD Reg1 from memory
+				instruction[3:0] = addr;		// Address to read in memory from
+			end 
+			
+			4'b0111: begin // STORE Reg1 to memory
+				store_enable = 1;
+				instruction[3:0] = addr;		// Address to read in memory from
+			end 
+			
+			default: begin
+				operand1 = 8'b00000000;       // Default case (NOP or invalid)
+				operand2 = 8'b00000000;
+				write_enable = 0;
+				store_enable = 0;
+			end
+		endcase
+	end
+
+endmodule

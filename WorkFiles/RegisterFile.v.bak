@@ -1,0 +1,27 @@
+module RegisterFile (
+	input clk,                      
+	input reset,
+	input [3:0] read_reg1,          // Address of the first register to read
+	input [3:0] read_reg2,          // Address of the second register to read
+	input [3:0] write_reg,          // Address of the register to write to
+	input [7:0] write_data,         // Data to write into the register
+	input write_enable,              // Write enable signal
+	output reg [7:0] reg1_data,     // Data output of the first register
+	output reg [7:0] reg2_data       // Data output of the second register
+);
+	// 16 registers, each 8 bits wide
+	reg [7:0] registers [15:0];
+
+	// Reading data from register
+	always @(*) begin
+		reg1_data = registers[read_reg1];  // Read data from the first register
+		reg2_data = registers[read_reg2];  // Read data from the second register
+	end
+	
+	// Writing to register block
+   always @(posedge clk) begin
+		if (write_enable) begin
+			registers[write_reg] <= write_data; // Write data to the specified register
+		else begin	
+	end
+endmodule

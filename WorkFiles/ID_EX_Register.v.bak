@@ -1,0 +1,29 @@
+module ID_EX_Register (
+    input clk,                                // Clock signal
+    input reset,                              // Reset signal
+    input write_enable_id,                    // Write enable signal from Instruction Decode
+    input [3:0] opcode_id,                    // Opcode from Instruction Decode
+    input [7:0] operand1_id,                  // Operand 1 from Instruction Decode
+    input [7:0] operand2_id,                  // Operand 2 from Instruction Decode
+    input [3:0] store_addr_id,                // Store address from Instruction Decode
+    output reg [3:0] opcode_ex,               // Opcode to Execution Stage
+    output reg [7:0] operand1_ex,             // Operand 1 to Execution Stage
+    output reg [7:0] operand2_ex,             // Operand 2 to Execution Stage
+    output reg [3:0] store_addr_ex            // Store address to Execution Stage
+);
+
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            opcode_ex <= 4'b0000;
+            operand1_ex <= 8'b00000000;
+            operand2_ex <= 8'b00000000;
+            store_addr_ex <= 4'b0000;
+        end else if (write_enable_id) begin
+            opcode_ex <= opcode_id;
+            operand1_ex <= operand1_id;
+            operand2_ex <= operand2_id;
+            store_addr_ex <= store_addr_id;
+        end
+    end
+
+endmodule

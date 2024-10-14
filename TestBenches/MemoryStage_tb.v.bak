@@ -1,0 +1,78 @@
+`timescale 1ns / 1ps
+
+module MemoryStage_tb;
+	reg clk;
+	reg [7:0] write_data;
+	reg [3:0] mem_addr;
+	reg store_enable;
+	reg load_enable;
+
+	wire [7:0] read_data;
+
+	MemoryStage uut (
+		.clk(clk),
+		.write_data(write_data),
+		.mem_addr(mem_addr),
+		.store_enable(store_enable),
+		.load_enable(load_enable),
+		.read_data(read_data)
+	);
+
+	always begin
+		#25 clk = ~clk; 	// Toggle clock every 25ns (0ns clock period)
+	end
+
+	initial begin
+		clk = 0;
+		write_data = 8'b0;
+		mem_addr = 4'b0;
+		store_enable = 0;
+		load_enable = 0;
+
+		// Store data into memory at address 0
+		#50;
+		write_data = 8'hA5;       // Write value A5 (hex) to memory
+		mem_addr = 4'd0;          // Memory address 0
+		store_enable = 1;
+		load_enable = 0;
+		#50;                      // Wait for clock edge
+
+		store_enable = 0;         // Disable store
+		#50;
+
+		// Load data from memory address 0
+		load_enable = 1;
+		mem_addr = 4'd0;          // Memory address 0
+		#50;
+		$display("Data read from address 0: %h", read_data);  // Expect A5
+
+		load_enable = 0;          // Disable load
+		#50;
+
+		// Store data into memory at address 5
+		write_data = 8'h3C;       // Write value 3C (hex) to memory
+		mem_addr = 4'd5;          // Memory address 5
+		store_enable = 1;
+		#50;                      // Wait for clock edge
+
+		store_enable = 0;         // Disable store
+		#50;
+
+		// Load data from memory address 5
+		load_enable = 1;
+		mem_addr = 4'd5;          // Memory address 5
+		#50;
+		$display("Data read from address 5: %h", read_data);  // Expect 3C
+
+		load_enable = 0;          // Disable load
+		#50;
+
+		// Try reading from an address that has not been written
+		mem_addr = 4'd10;         // Memory address 10 (not initialized)
+		load_enable = 1;
+		#50;
+		$display("Data read from address 10: %h", read_data); // Expect 0
+
+		$stop;
+	end
+endmodule

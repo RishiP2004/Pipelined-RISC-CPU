@@ -1,0 +1,21 @@
+module WriteBackStage (
+    input write_enable,                 // Write enable signal from Execution
+    input [7:0] result,                 // Result from Execution stage
+    input [3:0] store_addr,             // Address to write back to register file
+    output reg [7:0] reg_data,          // Data to be written to the register file
+    output reg [3:0] reg_addr,          // Register address to write to
+    output reg write_enable_reg         // Signal to enable write in the register file
+);
+
+    always @(*) begin
+        reg_data = 8'b00000000;          // Default register data
+        reg_addr = 4'b0000;              // Default register address
+        write_enable_reg = 0;            // Default write enable for register file
+
+        if (write_enable) begin
+            reg_data = result;            // Data to write back
+            reg_addr = store_addr;        // Address to write back to
+            write_enable_reg = 1;         // Enable writing to register
+        end
+    end
+endmodule

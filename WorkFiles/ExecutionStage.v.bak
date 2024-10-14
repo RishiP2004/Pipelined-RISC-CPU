@@ -1,0 +1,53 @@
+module ExecutionStage (
+	input [3:0] opcode,                	// Op code from Instruction Decode
+	input [7:0] operand1,              	// First operand
+	input [7:0] operand2,              	// Second operand
+	output reg [7:0] result,           	// Result of the operation
+	output reg [3:0] store_addr,       	// Address to store the result if needed
+	output reg write_enable,            // Signal to write to the register file
+	
+	output reg store_enable             // Signal to enable store operation
+	output reg mem_addr 
+);
+
+	
+
+	always @(*) begin
+		result = 8'b00000000;            // Default result
+		write_enable = 0;                // Default write enable
+		store_enable = 0;                // Default store enable
+		store_addr = 4'b0000;            // Default store address
+
+		case (opcode)
+			4'b0001: begin // ADD
+				result = operand1 + operand2; // Perform addition          
+			end
+			4'b0010: begin // SUB
+				result = operand1 - operand2; // Perform subtraction          
+			end
+            
+			4'b0011: begin // LOAD (IMMEDIATE)
+				result = operand1;             // Result is the loaded value
+			end
+            
+			4'b0100: begin // STORE
+				// Nothing else to do
+			end
+			
+			4'b0011: begin // LOAD (FROM MEMORY)
+				result = operand1;             // Result is the loaded value
+			end
+             
+			4'b0100: begin // STORE (TO MEMORY)
+				// Nothing else to do
+			end
+
+			default: begin
+				result = 8'b00000000;          // Default case (NOP or invalid)
+				write_enable = 0;
+				store_enable = 0;
+			end
+		endcase
+end
+
+endmodule
