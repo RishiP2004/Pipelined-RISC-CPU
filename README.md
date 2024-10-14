@@ -3,10 +3,15 @@ This project implements a RISC (Reduced Instruction Set Computing) 16-bit CPU ar
 
 # Table of Contents
 [Features](#features)
+
 [Architecture](#architecture)
+
 [Modules](#modules)
+
 [Testbenches](#testbenches)
+
 [Usage](#usage)
+
 [Installation](#installation)
 
 # Features
