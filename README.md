@@ -55,5 +55,7 @@ Clone the repository:
 
 bash
 Copy code
+
 git clone https://github.com/RishiP2004/Pipelined-RISC-CPU.git
+
 cd Pipelined-RISC-CPU
