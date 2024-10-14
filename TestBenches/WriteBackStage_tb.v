@@ -1,10 +1,10 @@
 module WritebackStage_tb;
 	reg clk;
-	reg [7:0] result_wb;
+	reg [15:0] result_wb;
 	reg write_enable_wb;
 	reg [3:0] reg_addr_wb;
 
-	wire [7:0] write_data;
+	wire [15:0] write_data;
 	wire [3:0] reg_addr_out;
 	wire write_enable_out;
 
@@ -26,14 +26,14 @@ module WritebackStage_tb;
 	initial begin
 		clk = 0;
 		// Normal register write with write_enable = 1
-		result_wb = 8'b10101010;
+		result_wb = 16'b10101010;
 		write_enable_wb = 1;
 		reg_addr_wb = 4'b0011;
 		#20;  		// Wait for clock edge
 		$display("Test 1: write_data = %b, reg_addr_out = %b, write_enable_out = %b", write_data, reg_addr_out, write_enable_out);
 
 		// No write with write_enable = 0
-		result_wb = 8'b11001100;
+		result_wb = 16'b11001100;
 		write_enable_wb = 0;
 		reg_addr_wb = 4'b0101;
 		#20;			// Wait for clock edge
@@ -42,7 +42,7 @@ module WritebackStage_tb;
 		$display("Test 2: write_data = %b, reg_addr_out = %b, write_enable_out = %b", write_data, reg_addr_out, write_enable_out);
 
 		// Change register address, write_enable = 1
-		result_wb = 8'b11110000;
+		result_wb = 16'b11110000;
 		write_enable_wb = 1;
 		reg_addr_wb = 4'b0110;
 		#20;			// Wait for clock edge

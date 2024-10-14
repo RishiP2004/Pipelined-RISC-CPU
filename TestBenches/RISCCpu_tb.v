@@ -1,10 +1,10 @@
-module RISCCpu_tb;
+module RISCCPU_tb;
 	reg clk;
 	reg reset;
 
 	wire [15:0] result;
 
-	RISCCpu uut (
+	RISCCPU uut (
 		.clk(clk),
 		.reset(reset),
 		.result(result)

@@ -1,10 +1,10 @@
 module WriteBackStage (
 	input clk,
-	input [7:0] result,          		// Result of operation
+	input [15:0] result,          	// Result of operation
 	input write_enable,          		// Write enable signal
 	input [3:0] reg_addr,        		// Register address
 	
-	output reg [7:0] write_data,    	// Data to be written back to the register file
+	output reg [1:0] write_data,    	// Data to be written back to the register file
 	output reg [3:0] reg_addr_out,  	// Register address to write back to
 	output reg write_enable_out     	// Write enable for the register file
 );

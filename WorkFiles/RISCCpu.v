@@ -1,7 +1,7 @@
-module RISCCpu (
+module RISCCPU (
 	input clk,
 	input reset,
-	output reg [1:0] result
+	output reg [15:0] result
 );
 	// InstructionFetchStage wires
 	wire [2:0] if_pc;
