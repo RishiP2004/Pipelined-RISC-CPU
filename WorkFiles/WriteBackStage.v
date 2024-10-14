@@ -4,7 +4,7 @@ module WriteBackStage (
 	input write_enable,          		// Write enable signal
 	input [3:0] reg_addr,        		// Register address
 	
-	output reg [1:0] write_data,    	// Data to be written back to the register file
+	output reg [15:0] write_data,    // Data to be written back to the register file
 	output reg [3:0] reg_addr_out,  	// Register address to write back to
 	output reg write_enable_out     	// Write enable for the register file
 );
