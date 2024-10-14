@@ -8,7 +8,7 @@ This project implements a RISC (Reduced Instruction Set Computing) 16-bit CPU ar
 
 [Modules](#modules)
 
-[Testbenches](#testbenches)
+[Testbench](#testbench)
 
 [Usage](#usage)
 
@@ -20,13 +20,15 @@ Support for basic arithmetic and load/store instructions
 Verilog testbench for simulation and validation
 
 # Architecture
-The CPU architecture consists of the following stages:
+The CPU architecture consists of the general following stages:
 
 - Instruction Fetch Stage (IF)
 - Instruction Decode Stage (ID)
 - Execution Stage (EX)
 - Memory Stage (MEM)
 - Write-Back Stage (WB)
+
+NOTE: See [Modules](#modules) for a better understanding of the design.
 
 # Modules
 - InstructionFetchStage: Retrieves instructions from the Instruction Memory, incrementing the program counter for the next instruction.
